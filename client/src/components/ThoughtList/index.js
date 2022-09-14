@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 const ThoughtList = ({ thoughts, title }) => {
-  if(!thoughts.length) {
+  if (!thoughts.length) {
     return <h3>No Thoughts Yet</h3>;
   }
 
@@ -9,11 +9,10 @@ const ThoughtList = ({ thoughts, title }) => {
     <div>
       <h3>{title}</h3>
       {thoughts &&
-        thoughts.map(thought => (
+        thoughts.map((thought) => (
           <div key={thought._id} className="card mb-3">
             <p className="card-header">
-              {thought.username}
-              thought on {thought.createdAt}
+              {thought.username} thought on {thought.createdAt}
             </p>
             <div className="card-body">
               <p>{thought.thoughtText}</p>
