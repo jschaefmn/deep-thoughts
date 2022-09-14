@@ -7,6 +7,17 @@ const resolvers = {
   Query: {
     // Pass in parent as more of a placeholder parameter and not used
     // use ternary operator to check if username exists, if it does then filter by username, if not then return empty array
+    me: async (parent, args, context) => {
+      if (context.user) {
+        const userData = await User.findOne({_id: context.user._id})
+          .select('-__v -password')
+          .populate('friends')
+          .populate('thoughts');
+
+        return userData;
+      }
+      throw new AuthenticationError('Not logged in');
+    },
     thoughts: async (parent, { username }) => {
       const params = username ? { username } : {};
       return Thought.find().sort({ createdAt: -1 });
@@ -28,17 +39,6 @@ const resolvers = {
         .populate('friends')
         .populate('thoughts');
     },
-    me: async (parent, args, context) => {
-      if (context.user) {
-        const userData = await User.findOne({_id: context.user._id})
-          .select('-__v -password')
-          .populate('friends')
-          .populate('thoughts');
-
-        return userData;
-      }
-      throw new AuthenticationError('Not logged in');
-    }
   },
 
   Mutation: {
